@@ -33,9 +33,17 @@ struct MainCarView: View {
     @State private var insurancedate:Date = Date()
     @State private var regdate:Date = Date()
     @State private var motdate:Date = Date()
-    
+
     var body: some View {
-        Text("      Edit       Fuel    Extra   Insurance  Expenses         ")
+
+        Text("Main View")
+            .bold()
+            .foregroundColor(.blue)
+            .font(Font.custom("Avenir Heavy", size: 24))
+        Text("  Edit      Fuel    Extra   Insurance  Expenses")
+            .allowsTightening(true)
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
         
         //Work out No of Days  since the Start
         let calendar = Calendar.current
@@ -98,7 +106,7 @@ struct MainCarView: View {
                         Text("  Tot Expenses").gridCellColumns(1)
                         Text("£ " + String(format: "%.0f", car.expensestot)).gridCellColumns(2)
                         Text("  Fuel Cost Daily").gridCellColumns(1)
-                        Text("£ " + String(format: "%.0f", costperDay)).gridCellColumns(2)
+                        Text("£ " + String(format: "%.2f", costperDay)).gridCellColumns(2)
                         Text("  Fuel Cost Monthly").gridCellColumns(1)
                         Text("£ " + String(format: "%.0f", costperMonth)).gridCellColumns(2)
                         //                      Spacer()
@@ -106,63 +114,57 @@ struct MainCarView: View {
                 }  /// VStack
             } // List
             
-            // Displays  "Edit   Fuel   Extra   Insurance  Expenses" at the top of the screen
-            
-            .navigationTitle("")
+            /// Displays  "Edit   Fuel   Extra   Insurance  Expenses" at the top of the screen
+
             .toolbar {
                 Button {
                     showingEditView.toggle()
                     
                 } label: {
                     Label("edit", systemImage: "square.and.pencil")
-                } /// Label
+                }.position(x: 10, y: 20)
                 .sheet(isPresented: $showingEditView) {
                     EditCarView(car:car)
                 } /// sheet
-                Text("  ")
-                
                 Button {
                     showingAddView.toggle()
                 } label: {
                     Label("fuel", systemImage: "fuelpump.circle")
-                } /// Label
+                }.position(x: 18, y: 20)   /// Label
                 .sheet(isPresented: $showingAddView) {
                     AddFuelView(car:car)
                 } /// sheet
-                Text("  ")
-                
-                
                 Button {
                     showingExtraView.toggle()
                 } label: {
                     Label("extra", systemImage: "list.bullet")
-                } /// Label
+                }.position(x: 20, y: 20)   /// Label
                 .sheet(isPresented: $showingExtraView) {
                     ExtraDetailsView(car:car)
                 } /// sheet
-                Text("     ")
                 Button {
                     showingInsurance.toggle()
                 } label: {
                     Label("insurance", systemImage: "cross.vial")
-                } /// Label
+                }.position(x: 30, y: 20)   /// Label
                 .sheet(isPresented: $showingInsurance) {
                     Insurance(car:car)
                 } /// sheet
-                Text("   ")
                 
                 Button {
                     showingExpense.toggle()
                 } label: {
                     Label("Expenses", systemImage: "sterlingsign.circle")
-                } /// Label
+                }.position(x: 50, y: 20)   /// Label
                 .sheet(isPresented: $showingExpense) {
                     AddExpense(car:car)
                 } /// sheet
-                Text("   ").padding()
+              Text("            ").padding()
                 
             } /// .toolbar
         } /// NavigationView
+
+
     } /// Body
 }  //// Struct
 

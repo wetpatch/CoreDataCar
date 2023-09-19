@@ -19,7 +19,9 @@ struct ListView: View {
     
     
     var body: some View {
+
         NavigationView {
+
             VStack(alignment: .leading) {
                 List {                            /// WE have an UUID so do not need an initial value in the For Next Loop
                     ForEach(car) { car in
@@ -46,8 +48,10 @@ struct ListView: View {
                 .listStyle(.plain)
             } /// VStack
             
-            
-            .navigationTitle("All Vehicles")
+
+            .navigationTitle("Vehicle Details")
+            .navigationBarTitleDisplayMode(.inline)   /// Reduce the size of the Text that appears at the top
+
             .toolbar {
                 
                 
@@ -72,7 +76,7 @@ struct ListView: View {
             } /// sheet
         } /// Nav View
         .navigationViewStyle(.stack)
-        
+
     } /// Body View
     
     private func deleteCar(offsets: IndexSet)  {
