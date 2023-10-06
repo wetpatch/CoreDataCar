@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Car" representedClassName="Car" syncable="YES">
+        <attribute name="colour" optional="YES" attributeType="String"/>
+        <attribute name="costpermile" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="enginesize" optional="YES" attributeType="String"/>
+        <attribute name="expensestot" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fuelcosttot" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fueltype" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="insurancecosttot" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="insurancedate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="insurercontact" optional="YES" attributeType="String"/>
+        <attribute name="insurername" optional="YES" attributeType="String"/>
+        <attribute name="insurerpolicy" optional="YES" attributeType="String"/>
+        <attribute name="litrestot" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="maintenancecost" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="make" optional="YES" attributeType="String"/>
+        <attribute name="mileagenow" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="mileagestarting" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="model" optional="YES" attributeType="String"/>
+        <attribute name="motdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="oiltype" optional="YES" attributeType="String"/>
+        <attribute name="purchasecost" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="purchasedate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="regdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="regno" optional="YES" attributeType="String"/>
+        <attribute name="servicedue" optional="YES" attributeType="String"/>
+        <attribute name="taxdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="tyrepressure" optional="YES" attributeType="String"/>
+        <attribute name="variant" optional="YES" attributeType="String"/>
+        <attribute name="version" optional="YES" attributeType="String"/>
+        <attribute name="vin" optional="YES" attributeType="String"/>
+        <relationship name="carExpense" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Expense" inverseName="carExpense" inverseEntity="Expense"/>
+        <relationship name="carInsurance" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Insurance" inverseName="carInsurance" inverseEntity="Insurance"/>
+        <relationship name="fuelCost" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Fuel" inverseName="fuelCost" inverseEntity="Fuel"/>
+    </entity>
+    <entity name="Expense" representedClassName="Expense" syncable="YES">
+        <attribute name="expensecost" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="expensedate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expensedetail" optional="YES" attributeType="String"/>
+        <attribute name="regnum" optional="YES" attributeType="String"/>
+        <relationship name="carExpense" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Car" inverseName="carExpense" inverseEntity="Car"/>
+    </entity>
+    <entity name="Fuel" representedClassName="Fuel" syncable="YES">
+        <attribute name="costperlitre" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fuelcostnow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fuelcosttot" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fueldate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="litresnow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="mileagenow" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="fuelCost" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Car" inverseName="fuelCost" inverseEntity="Car"/>
+    </entity>
+    <entity name="Insurance" representedClassName="Insurance" syncable="YES">
+        <attribute name="comment" optional="YES" attributeType="String"/>
+        <attribute name="cost" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="insdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="carInsurance" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Car" inverseName="carInsurance" inverseEntity="Car"/>
+    </entity>
+</model>
