@@ -95,8 +95,9 @@ struct EditCarView: View {
  
  
                     }  /// LazyGrid
-                } /// Form
-            } /// Section
+                } /// Section
+            } /// Form
+            .font(.system(size: 14, weight: .bold))
       .onAppear {
           make = car.make!
           model = car.model!

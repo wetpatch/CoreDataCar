@@ -40,8 +40,7 @@ struct AddFuel: View {
             .foregroundColor(.blue)
             .font(Font.custom("Avenir Heavy", size: 20))
         
-        
-        //       HStack {
+
         Form {
             Section {
                 let columns = [GridItem(.fixed(120)), GridItem(.fixed(175))]
@@ -130,7 +129,7 @@ struct AddFuel: View {
         withAnimation {
             offsets.map { car.fuelCostArray[$0] }
                 .forEach { fuel in
-                    managedObjectContext.delete(fuel)
+                    car.removeFromFuelCost(fuel)
                 }
             DataController().save(context: managedObjectContext)
         } /// func

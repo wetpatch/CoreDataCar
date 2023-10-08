@@ -24,8 +24,8 @@ struct MainCarView: View {
         tabBarData(lable: "Edit", img: "square.and.pencil"),
         tabBarData(lable: "Fuel", img: "fuelpump.circle"),
         tabBarData(lable: "Extra", img: "list.bullet"),
-        tabBarData(lable: "Insurance", img: "cross.vial"),
-        tabBarData(lable: "Expenses", img: "sterlingsign.circle")
+        tabBarData(lable: "Insure", img: "cross.vial"),
+        tabBarData(lable: "Expense", img: "sterlingsign.circle")
     ]
     
     var car: FetchedResults<Car>.Element
@@ -54,9 +54,11 @@ struct MainCarView: View {
                 .font(Font.custom("Avenir Heavy", size: 24))
 
 //       MARK: Work out Cost per Day and Month
+ 
             let daysDiff = Dates.dateDiff(firstdate: car.purchasedate ?? Date())
             let costperDay: Double = (car.fuelcosttot) / Double(daysDiff )
             let columns = [GridItem(.fixed(175)), GridItem(.fixed(180))]
+
             VStack (alignment: .leading, spacing: 8) {
                 List {
              //       let columns = [GridItem(.fixed(175)), GridItem(.fixed(180))]
@@ -101,40 +103,48 @@ struct MainCarView: View {
                         Text("   Tot Expenses").gridCellColumns(1)
                         Text("£ " + String(format: "%.0f", car.expensestot))
                         Text("   Fuel Cost Daily").gridCellColumns(1)
-                        Text("£ " + String(format: "%.2f", costperDay))
+                        if car.fuelcosttot == 0.0 || daysDiff == 0 {
+                            Text("£ 0.0")
+                        } else {
+                            Text("£ " + String(format: "%.2f", costperDay))
+                        }
                         Text("   Fuel Cost Monthly").gridCellColumns(1)
-                        Text("£ " + String(format: "%.0f", costperDay*30))
+                        if car.fuelcosttot == 0.0 || daysDiff == 0 {
+                            Text("£ 0.0")
+                        } else {
+                            Text("£ " + String(format: "%.0f", costperDay * 30))
+                        }
+                            
                     } /// LazyGrid
                 }  /// VStack
             } // List
-            
+            .font(.system(size: 14, weight: .semibold))
             
             Divider()
-            HStack(alignment: .center) {
+                HStack() {
                 ForEach(0 ..< 5) {
                     idx in
-                    Spacer()
                     Button {
                         tabIndex = idx
                     } label: {
-                        VStack(alignment: .center) {
-                            
-                            Image(systemName: tabBarDataList[idx].img).font(.system(size: 20, weight: .bold)).frame(width: 24, height: 24)
+                            VStack() {
+
+                            Image(systemName: tabBarDataList[idx].img).font(.system(size: 20, weight: .bold))
                                 .padding(.top, 8)
+                           .frame(width:65, height:24, alignment: .center)
+
                             
                             Text(tabBarDataList[idx].lable).font(.caption2)
                                 .frame(width: 65)
-                            //                         .multilineTextAlignment(.center)
+
                         } ///VStack
                         .frame(width: 30).foregroundColor(tabIndex == idx ? Color.purple : .gray)
                         .padding(.bottom, -12)
                         .animation(.easeOut, value: tabIndex)
                     } /// Label
-                    
                     /*
                      'init(_:destination:tag:selection:)' was deprecated in iOS 16.0: use NavigationLink(value:label:), or navigationDestination(isPresented:destination:), inside a NavigationStack or NavigationSplitView
                      */
-                    Spacer()
                     
                     NavigationLink("",destination: EditCarView(car: car), tag: 0, selection: $tabIndex)
                     NavigationLink("",destination: AddFuel(car: car), tag: 1, selection: $tabIndex)
@@ -146,7 +156,7 @@ struct MainCarView: View {
                 
             } /// HStack
             .background(.thinMaterial)
-            .ignoresSafeArea(.all)
+          .ignoresSafeArea(.all)
         }
     } /// Body
 } /// Struct

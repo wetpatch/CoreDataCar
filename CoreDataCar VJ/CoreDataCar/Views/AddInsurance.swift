@@ -11,9 +11,10 @@ import CoreData
 struct AddInsurance: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.dismiss) var dismiss
-    var car: FetchedResults<Car>.Element
     
-  //  @StateObject var car: Car
+//    var car: FetchedResults<Car>.Element
+    @StateObject var car: Car
+    
     @State private var insdate: Date = Date()      /// Insurance Entity
     @State private var cost: Int64 = 0             /// Insurance Entity
     @State private var comment: String = ""        /// Insurance Entity
@@ -25,9 +26,11 @@ struct AddInsurance: View {
     @State private var insurancedateString = ""    /// Temp variables
     @State private var selectedDate = Date()       /// Temp variables
     @State var tempdate = Date()                   /// Temp variables
-    @State var tempcost: Int64 = 0                 /// Temp variables
+    @State var tempcost: Int64  = 0                /// Temp variables
     @State var tempcomment: String = ""            /// Temp variables
-
+    @State var temppolicy: String = ""             /// Temp variables
+    @State var tempname: String = ""               /// Temp variables
+    @State var tempcontact: String = ""             /// Temp variables
     
     @State private var isEditing = false
 
@@ -42,16 +45,16 @@ struct AddInsurance: View {
         Form {
             Section {
                 let columns = [GridItem(.fixed(120)), GridItem(.fixed(175))]
-                LazyVGrid(columns: columns, alignment: HorizontalAlignment.leading, spacing: 5) {
+                LazyVGrid(columns: columns, alignment: HorizontalAlignment.leading, spacing: 10) {
 
                     Text(" ")
                     Text(" ").gridCellColumns(1)
                     Text(" Insurer Name")
-                    TextField("Name", text: $insurername).gridCellColumns(1)
+                    TextField("Name", text: $tempname).gridCellColumns(1)
                     Text(" Policy No")
-                    TextField("PolicyNo", text: $insurerpolicy).gridCellColumns(1)
+                    TextField("PolicyNo", text: $temppolicy).gridCellColumns(1)
                     Text(" Contact")
-                    TextField("Contact", text: $insurercontact).gridCellColumns(1)
+                    TextField("Contact", text: $tempcontact).gridCellColumns(1)
                     Text(" Date")
                     DatePicker("   Date", selection: $selectedDate, displayedComponents: .date)
                         .datePickerStyle(Dates(dateString: $insurancedateString))
@@ -73,9 +76,9 @@ struct AddInsurance: View {
        .font(.system(size: 14, weight: .semibold))
         
         .onAppear {
-            insurername = car.insurername!
-            insurerpolicy = car.insurerpolicy!
-            insurercontact = car.insurercontact!
+            tempname = car.insurername ?? " "
+            temppolicy = car.insurerpolicy ?? " "
+           tempcontact = car.insurercontact ?? " "
         }
         
        NavigationView {
@@ -87,15 +90,17 @@ struct AddInsurance: View {
                        ForEach(car.carInsuranceArray) { insurance in
                            LazyHGrid(rows: rows, spacing: 10 )      {
                            Text(Dates.aString(date: insurance.insdate ?? Date()))
-                           Text("£ \(insurance.cost)")
+                               Text("£ \(insurance.cost )")
                            Text(insurance.comment ?? " ")
                            } /// LazyGrid
                            }.onDelete(perform: deleteInsurance)      /// For Each
                 }   /// List
                 .font(.system(size: 14, weight: .semibold))
-               
-               Text("      Total Premiums £ " + String(car.carInsuranceArray.reduce(0)
+/*
+            Text("      Total Premiums £ " + String(format: "%.0f", car.carInsuranceArray.reduce(0)
                     { $0 + ($1.cost) }))
+ */
+               Text("      Total Premiums £ \(car.insurancecosttot)")
                 .font(.system(size: 14, weight: .semibold))
             
             } /// VStack
@@ -134,17 +139,17 @@ struct AddInsurance: View {
         withAnimation {
             offsets.map { car.carInsuranceArray[$0] }
                 .forEach { insurance in
-                    managedObjectContext.delete(insurance)
-                }
-            DataController().save(context: managedObjectContext)
-        } /// func
-    } /// Animation
+                    car.removeFromCarInsurance(insurance)
+                } /// ForEach
+                    DataController().save(context: managedObjectContext)
+        } /// Animation
+    } /// func
 
     private func addInsurance() {
         withAnimation {
             let newInsurance = Insurance(context: managedObjectContext)
             newInsurance.insdate = selectedDate
-            newInsurance.cost = tempcost
+            newInsurance.cost = Int64(tempcost)
             newInsurance.comment = tempcomment
             car.addToCarInsurance(newInsurance)
             DataController().save(context: managedObjectContext)
@@ -159,9 +164,9 @@ struct AddInsurance: View {
          After running this code, the total fuelcost will be stored in car.fuelcosttot. This property will be updated whenever the fuelcost in car.fuelArray change, ensuring that it always reflects the correct total.
          */
         car.insurancecosttot = car.carInsuranceArray.reduce(0) { $0 + ($1.cost ) }
-        car.insurername = insurername
-        car.insurerpolicy = insurerpolicy
-        car.insurercontact = insurercontact
+        car.insurername = tempname
+        car.insurerpolicy = temppolicy
+        car.insurercontact = tempcontact
         DataController().save(context: managedObjectContext)
     }
     

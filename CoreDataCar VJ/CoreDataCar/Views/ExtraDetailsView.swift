@@ -31,7 +31,7 @@ struct ExtraDetailsView: View {
                     .font(Font.custom("Avenir Heavy", size: 24))
 
                     Section {
-                        let columns = [GridItem(.fixed(175)), GridItem(.fixed(240))]
+                        let columns = [GridItem(.fixed(175)), GridItem(.fixed(195))]
   LazyVGrid(columns: columns, alignment: HorizontalAlignment.leading, spacing: 5 )  {
                             Text("      Fuel Type").gridCellColumns(1)
   TextField("Fuel Type", text: $fueltype).textFieldStyle(.roundedBorder)
@@ -66,6 +66,7 @@ TextField("Oil Type", text: $oiltype).textFieldStyle(.roundedBorder)
                                 } /// onAppear
                         }   /// LazyGrid
                    }  ///Section
+            .font(.system(size: 14, weight: .bold))
             } /// VStack
             HStack {
                 Spacer()

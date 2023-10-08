@@ -114,7 +114,7 @@ struct AddExpense: View {
         withAnimation {
             offsets.map { car.carExpenseArray[$0] }
                 .forEach { expense in
-                    managedObjectContext.delete(expense)
+                    car.removeFromCarExpense(expense)
                 }
             DataController().save(context: managedObjectContext)
         } /// func
